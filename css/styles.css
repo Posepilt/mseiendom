@@ -211,6 +211,11 @@ a:hover {
     margin-top: var(--space-l);
 }
 
+/* Two notes in a row sit closer together. */
+.note + .note {
+    margin-top: var(--space-s);
+}
+
 .note__label {
     color: var(--color-orange-deep);
 }
