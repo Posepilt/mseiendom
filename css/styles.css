@@ -1,67 +1,83 @@
 /* ==========================================================================
-   mseiendom: holiday flat in Torrevieja
-   Plain CSS, BEM naming, mobile first.
-   Sections in this file:
-   1. Custom properties (colors, spacing, type)
-   2. Base and reset
-   3. Utilities (visually hidden, skip link)
-   4. Site header and navigation
-   5. Shared section layout
-   6. Intro
-   7. Gallery
-   8. Text content (apartment)
-   9. Amenities
+   Malvik Spania Eiendom
+   BEM class names, mobile first.
+
+   1.  Fonts
+   2.  Design tokens
+   3.  Base
+   4.  Utilities
+   5.  Site header and navigation
+   6.  Sections
+   7.  Intro
+   8.  Gallery and photo viewer
+   9.  Amenities
    10. Area and map
    11. Prices
    12. Contact
-   13. Larger screens
-   14. Reduced motion, short screens and print
+   13. Breakpoints
+   14. Motion, short screens and print
    ========================================================================== */
 
 
-/* 1. Custom properties
+/* 1. Fonts
+   Both typefaces are self-hosted and licensed under the SIL Open Font License.
+   Marcellus is used for headings (h1 to h4) only. Jost is used for all other text.
+   ========================================================================== */
+
+@font-face {
+    font-family: "Marcellus";
+    src: url("../fonts/marcellus-latin-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Jost";
+    src: url("../fonts/jost-latin-variable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/* 2. Design tokens
    ========================================================================== */
 
 :root {
-    /* Colors. All text pairs meet WCAG 2.2 AA (4.5:1 or better). */
-    --color-sand: #fbf6ec;
+    /* No font sizes are set except the lead text: headings and body text use the
+       browser defaults, so the visitor's own text size setting is always respected. */
+
+    /* Colors come from the logo: black, white and the orange brush stroke.
+       Text pairs: ink on white 21:1, ink on apricot 18.9:1, ink on orange 8.9:1,
+       ink-soft on apricot 8:1, orange-deep on apricot 5.6:1 (WCAG 2.2 AA needs 4.5:1).
+       The plain orange is only used for decoration and as a background. */
     --color-white: #ffffff;
-    --color-seafoam: #e3f2f1;
-    --color-text: #1b2b3a;
-    --color-text-muted: #4a5866;
-    --color-sea: #0b5f70;
-    --color-sea-dark: #16324a;
-    --color-terracotta: #a3432a;
-    --color-sun: #f4c95d;
-    --color-border: #e2d9c8;
+    --color-ink: #000000;
+    --color-ink-soft: #4a4a4a;
+    --color-orange: #f19326;
+    --color-orange-deep: #9a4a00;
+    --color-apricot: #fff1dd;
+    --color-line: rgb(0 0 0 / 0.16);
 
-    /* Typography: system fonts, no font files to download. */
-    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --font-size-small: 0.9rem;
-    --font-size-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-    --font-size-h3: clamp(1.2rem, 1.1rem + 0.4vw, 1.4rem);
-    --font-size-h2: clamp(1.7rem, 1.4rem + 1.4vw, 2.4rem);
-    --font-size-h1: clamp(2rem, 1.5rem + 2.6vw, 3.4rem);
-    --line-height-body: 1.6;
-    --line-height-heading: 1.2;
+    --font-heading: "Marcellus", Georgia, "Times New Roman", serif;
+    --font-body: "Jost", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 
-    /* Spacing */
+
     --space-xs: 0.5rem;
     --space-s: 1rem;
     --space-m: 1.5rem;
     --space-l: 2.5rem;
-    --space-xl: clamp(3rem, 2rem + 5vw, 6rem);
+    --section-space: var(--space-l);
 
-    /* Layout */
     --content-width: 72rem;
-    --text-width: 65ch;
+    --text-width: 62ch;
     --header-height: 4rem;
-    --radius: 0.75rem;
-    --shadow: 0 0.25rem 1rem rgb(27 43 58 / 0.08);
+    --radius: 0.25rem;
 }
 
 
-/* 2. Base and reset
+/* 3. Base
    ========================================================================== */
 
 *,
@@ -74,44 +90,40 @@ html {
     color-scheme: light;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    /* Keeps section headings visible below the sticky header after a jump. */
-    scroll-padding-top: calc(var(--header-height) + var(--space-s));
+    /* A menu jump lands the section right under the sticky header. The 1px overlap
+       hides the sliver of the previous section that browser rounding can leave. */
+    scroll-padding-top: calc(var(--header-height) - 1px);
 }
 
 body {
     margin: 0;
     font-family: var(--font-body);
-    font-size: var(--font-size-body);
-    line-height: var(--line-height-body);
-    color: var(--color-text);
-    background-color: var(--color-sand);
+    line-height: 1.6;
+    color: var(--color-ink);
+    background-color: var(--color-white);
 }
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
     margin-top: 0;
     margin-bottom: var(--space-s);
-    line-height: var(--line-height-heading);
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: 1.15;
     text-wrap: balance;
 }
 
 h1 {
-    font-size: var(--font-size-h1);
-}
-
-h2 {
-    font-size: var(--font-size-h2);
-}
-
-h3 {
-    font-size: var(--font-size-h3);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
 }
 
 p {
+    max-width: var(--text-width);
     margin-top: 0;
     margin-bottom: var(--space-s);
-    max-width: var(--text-width);
     text-wrap: pretty;
 }
 
@@ -130,26 +142,37 @@ img {
     height: auto;
 }
 
+strong,
+th {
+    font-weight: 600;
+}
+
+/* Links keep the text color. The orange underline marks them as links. */
 a {
-    color: var(--color-sea);
-    text-decoration-thickness: 0.08em;
-    text-underline-offset: 0.2em;
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-orange);
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.22em;
 }
 
 a:hover {
-    color: var(--color-sea-dark);
-    text-decoration-thickness: 0.15em;
+    text-decoration-color: currentColor;
 }
 
-/* One clear focus style for everything you can tab to. */
 :focus-visible {
-    outline: 3px solid var(--color-sea-dark);
+    outline: 3px solid var(--color-ink);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: var(--radius);
+}
+
+::selection {
+    color: var(--color-ink);
+    background-color: var(--color-orange);
 }
 
 
-/* 3. Utilities
+/* 4. Utilities
    ========================================================================== */
 
 .visually-hidden {
@@ -170,20 +193,20 @@ a:hover {
     left: var(--space-xs);
     z-index: 100;
     padding: var(--space-xs) var(--space-s);
-    font-weight: 700;
+    font-weight: 600;
     color: var(--color-white);
-    background-color: var(--color-sea-dark);
+    background-color: var(--color-ink);
     border-radius: var(--radius);
+    text-decoration-line: none;
     transform: translateY(-200%);
 }
 
 .skip-link:focus {
-    color: var(--color-white);
     transform: translateY(0);
 }
 
 
-/* 4. Site header and navigation
+/* 5. Site header and navigation
    ========================================================================== */
 
 .site-header {
@@ -191,7 +214,8 @@ a:hover {
     top: 0;
     z-index: 50;
     background-color: var(--color-white);
-    border-bottom: 1px solid var(--color-border);
+    /* A shadow instead of a border keeps the header exactly --header-height tall. */
+    box-shadow: 0 1px 0 var(--color-line);
 }
 
 .site-header__inner {
@@ -199,7 +223,7 @@ a:hover {
     align-items: center;
     gap: var(--space-s);
     max-width: var(--content-width);
-    min-height: var(--header-height);
+    height: var(--header-height);
     margin-left: auto;
     margin-right: auto;
     padding-left: var(--space-s);
@@ -207,52 +231,41 @@ a:hover {
 }
 
 .site-header__logo {
-    font-size: 1.35rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--color-sea-dark);
-    text-decoration: none;
+    display: block;
+    flex-shrink: 0;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
 }
 
-.site-header__logo:hover {
-    color: var(--color-sea);
-}
-
-.site-header__logo-accent {
-    color: var(--color-terracotta);
+.site-header__logo-image {
+    display: block;
+    width: auto;
+    height: 3rem;
 }
 
 .site-nav {
     margin-left: auto;
 }
 
-/* Burger button, only used on small screens. */
-.site-nav__toggle,
-.site-nav__close {
+.site-nav__toggle {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
+    justify-content: center;
+    min-width: 2.75rem;
     min-height: 2.75rem;
-    padding: var(--space-xs) var(--space-s);
-    font: inherit;
-    font-weight: 700;
-    color: var(--color-sea-dark);
-    background-color: var(--color-seafoam);
+    padding: var(--space-xs) 0.6rem;
+    color: var(--color-ink);
+    background-color: transparent;
     border: 0;
     border-radius: var(--radius);
     cursor: pointer;
 }
 
-.site-nav__toggle:hover,
-.site-nav__close:hover {
-    background-color: var(--color-sun);
-}
-
-/* Three lines drawn with CSS, hidden from screen readers in the HTML. */
+/* The burger icon: three lines drawn in CSS. */
 .site-nav__burger {
     position: relative;
     display: block;
-    width: 1.25rem;
+    width: 1.375rem;
     height: 2px;
     background-color: currentColor;
 }
@@ -268,14 +281,27 @@ a:hover {
 }
 
 .site-nav__burger::before {
-    top: -6px;
+    top: -7px;
 }
 
 .site-nav__burger::after {
-    top: 6px;
+    top: 7px;
 }
 
-/* The menu is a native popover on small screens: no JavaScript needed. */
+/* While the menu is open the burger becomes an X. */
+.site-nav:has(.site-nav__menu:popover-open) .site-nav__burger {
+    background-color: transparent;
+}
+
+.site-nav:has(.site-nav__menu:popover-open) .site-nav__burger::before {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.site-nav:has(.site-nav__menu:popover-open) .site-nav__burger::after {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Small screens: the menu is a native popover that opens below the header. */
 .site-nav__menu {
     position: fixed;
     top: var(--header-height);
@@ -287,19 +313,16 @@ a:hover {
     margin: 0;
     padding: var(--space-s);
     overflow-y: auto;
-    color: var(--color-text);
+    color: var(--color-ink);
     background-color: var(--color-white);
     border: 0;
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: var(--shadow);
+    border-bottom: 3px solid var(--color-orange);
 }
 
+/* The backdrop starts below the header, so the X stays clear and easy to reach. */
 .site-nav__menu::backdrop {
-    background-color: rgb(27 43 58 / 0.3);
-}
-
-.site-nav__close {
-    margin-bottom: var(--space-s);
+    top: var(--header-height);
+    background-color: rgb(0 0 0 / 0.4);
 }
 
 .site-nav__list {
@@ -310,50 +333,54 @@ a:hover {
 
 .site-nav__link {
     display: block;
-    padding: 0.75rem var(--space-s);
-    font-weight: 600;
-    color: var(--color-sea-dark);
-    text-decoration: none;
+    padding: 0.8rem var(--space-s);
+    text-align: center;
+    text-decoration-line: none;
     border-radius: var(--radius);
 }
 
 .site-nav__link:hover {
-    color: var(--color-sea-dark);
-    background-color: var(--color-seafoam);
+    background-color: var(--color-apricot);
 }
 
 .lang-switch {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
     min-height: 2.75rem;
-    padding: var(--space-xs) var(--space-s);
-    font-weight: 600;
-    color: var(--color-sea-dark);
-    border: 2px solid var(--color-seafoam);
     border-radius: var(--radius);
-    text-decoration: none;
 }
 
-.lang-switch:hover {
-    color: var(--color-sea-dark);
-    border-color: var(--color-sea);
+.lang-switch__flag {
+    width: 1.75rem;
+    height: 1.25rem;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px var(--color-line);
+}
+
+.lang-switch:hover .lang-switch__flag {
+    box-shadow: 0 0 0 2px var(--color-orange);
 }
 
 
-/* 5. Shared section layout
+/* 6. Sections
+   Every section, the intro included, has the same space above and below.
+   Backgrounds alternate between white and apricot; the contact section is orange.
    ========================================================================== */
 
 .section {
-    padding-top: var(--space-xl);
-    padding-bottom: var(--space-xl);
-}
-
-.section--white {
+    padding-top: var(--section-space);
+    padding-bottom: var(--section-space);
     background-color: var(--color-white);
 }
 
-.section--seafoam {
-    background-color: var(--color-seafoam);
+.section--tint {
+    background-color: var(--color-apricot);
+}
+
+.section--accent {
+    background-color: var(--color-orange);
 }
 
 .section__inner {
@@ -364,174 +391,350 @@ a:hover {
     padding-right: var(--space-s);
 }
 
-.section__title {
-    position: relative;
-    padding-bottom: var(--space-xs);
-    color: var(--color-sea-dark);
+/* The last element adds no gap of its own, so the bottom space matches the top. */
+.section__inner > :last-child,
+.section__body > :last-child {
+    margin-bottom: 0;
 }
 
-/* Small sun colored line under section titles, purely decorative. */
-.section__title::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 3rem;
-    height: 0.3rem;
-    background-color: var(--color-sun);
-    border-radius: 1rem;
+.section__title {
+    margin-bottom: var(--space-m);
 }
+
 
 .section__lead {
-    font-size: 1.1em;
-    color: var(--color-text-muted);
+    max-width: 34em;
+    margin-bottom: var(--space-m);
+    font-size: 1.2rem;
+    line-height: 1.35;
 }
 
 .section__subtitle {
     margin-top: var(--space-l);
-    color: var(--color-sea-dark);
 }
 
 
-/* 6. Intro
+/* Section dividers
+   Where one section meets the next, the new section's color rises into the one
+   above along the curve of the logo's brush stroke, and the stroke itself is
+   drawn on the edge. Both shapes are masks, so they take the section's color. */
+.section {
+    position: relative;
+}
+
+.section + .section::before,
+.section + .section::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: calc(100% - 1px);
+    width: 100%;
+    height: clamp(1.25rem, 3vw, 2.25rem);
+    pointer-events: none;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+.section + .section::before {
+    background-color: inherit;
+    -webkit-mask-image: url("../images/divider-fill.svg");
+    mask-image: url("../images/divider-fill.svg");
+}
+
+.section + .section::after {
+    background-color: var(--color-orange);
+    -webkit-mask-image: url("../images/divider-stroke.svg");
+    mask-image: url("../images/divider-stroke.svg");
+}
+
+/* No divider between the intro and the first menu section. */
+.intro + .section::before,
+.intro + .section::after {
+    display: none;
+}
+
+
+
+/* 7. Intro
    ========================================================================== */
 
-.intro {
-    padding-top: var(--space-l);
-    padding-bottom: var(--space-l);
-    background-color: var(--color-sand);
-}
-
-.intro__eyebrow {
-    margin-bottom: var(--space-xs);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: var(--color-terracotta);
-}
-
 .intro__title {
-    max-width: 22ch;
-    color: var(--color-sea-dark);
+    max-width: 16ch;
+    margin-bottom: var(--space-m);
+    overflow-wrap: break-word;
 }
 
-.intro__text {
-    font-size: 1.15em;
-    color: var(--color-text-muted);
+.intro__location {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 500;
 }
 
-.intro__actions {
+.intro__location::before {
+    content: "";
+    flex-shrink: 0;
+    width: 1.3em;
+    height: 1.3em;
+    background-image: url("../images/icon-pin.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+/* Key facts on one line, separated by a dot. The empty alt text after the slash
+   keeps screen readers from reading the dot out loud. */
+.intro__facts {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-s);
-    margin-top: var(--space-m);
-}
-
-.facts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
-    gap: var(--space-s);
-    margin-top: var(--space-l);
-    margin-bottom: 0;
+    margin: var(--space-xs) 0 0 0;
     padding: 0;
+    list-style: none;
 }
 
-.facts__item {
-    padding: var(--space-s);
-    background-color: var(--color-white);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-}
-
-.facts__label {
-    font-size: var(--font-size-small);
-    color: var(--color-text-muted);
-}
-
-.facts__value {
-    margin: 0;
-    font-weight: 700;
-    color: var(--color-sea-dark);
-}
-
-.button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2.75rem;
-    padding: 0.6rem 1.25rem;
-    font-weight: 700;
-    text-decoration: none;
-    border: 2px solid var(--color-sea);
-    border-radius: 999px;
-}
-
-.button--primary {
-    color: var(--color-white);
-    background-color: var(--color-sea);
-}
-
-.button--primary:hover {
-    color: var(--color-white);
-    background-color: var(--color-sea-dark);
-    border-color: var(--color-sea-dark);
-}
-
-.button--secondary {
-    color: var(--color-sea);
-    background-color: transparent;
-}
-
-.button--secondary:hover {
-    color: var(--color-sea-dark);
-    background-color: var(--color-seafoam);
+.intro__fact + .intro__fact::before {
+    content: "·" / "";
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 
 
-/* 7. Gallery
+/* 8. Gallery and photo viewer
+   Phones: one row of photos to swipe through.
+   Wider screens: a mosaic with one large photo (see section 13).
+   The "show all" button opens every photo in the viewer.
    ========================================================================== */
 
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-    gap: var(--space-s);
+    position: relative;
+}
+
+.gallery__list {
+    display: flex;
+    gap: var(--space-xs);
     margin: 0;
     padding: 0;
+    overflow-x: auto;
     list-style: none;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+/* Each photo is a little narrower than the row, so the next one peeks in. */
+.gallery__item {
+    position: relative;
+    flex: 0 0 88%;
+    scroll-snap-align: start;
 }
 
 .gallery__figure {
     margin: 0;
 }
 
+.gallery__link {
+    display: block;
+    cursor: zoom-in;
+}
+
 .gallery__image {
+    display: block;
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    background-color: var(--color-seafoam);
-    border-radius: var(--radius);
+    background-color: var(--color-apricot);
 }
 
+.gallery__link:hover .gallery__image {
+    opacity: 0.9;
+}
+
+/* Captions stay available to screen readers and show in the photo viewer. */
 .gallery__caption {
-    margin-top: var(--space-xs);
-    font-size: var(--font-size-small);
-    color: var(--color-text-muted);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
 }
 
-
-/* 8. Text content (apartment)
-   ========================================================================== */
-
-.guest-summary {
-    max-width: var(--text-width);
-    margin: var(--space-m) 0 0 0;
-    padding: var(--space-m);
-    background-color: var(--color-seafoam);
-    border-left: 0.35rem solid var(--color-sea);
+.gallery__show-all {
+    position: absolute;
+    right: var(--space-s);
+    bottom: var(--space-s);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 2.75rem;
+    padding: 0.5rem 1rem;
+    font: inherit;
+    font-weight: 500;
+    color: var(--color-ink);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-ink);
     border-radius: var(--radius);
+    cursor: pointer;
 }
 
-.guest-summary p:last-child {
-    margin-bottom: 0;
+.gallery__show-all:hover {
+    background-color: var(--color-orange);
+}
+
+/* Without JavaScript the button has nothing to open, so it is hidden
+   and all photos stay on the page instead. */
+@media (scripting: none) {
+    .gallery__show-all {
+        display: none;
+    }
+}
+
+/* The photo viewer fills the screen. js/gallery.js opens and closes it. */
+.lightbox {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: var(--space-s);
+    color: var(--color-white);
+    background-color: var(--color-ink);
+    border: 0;
+}
+
+.lightbox[open] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-s);
+}
+
+.lightbox::backdrop {
+    background-color: transparent;
+}
+
+/* The page behind does not scroll while the viewer is open. */
+html:has(.lightbox[open]) {
+    overflow: hidden;
+}
+
+.lightbox__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-s);
+    max-width: 100%;
+    margin: 0;
+    /* Sideways swipes go to JavaScript; vertical scroll and pinch zoom still work. */
+    touch-action: pan-y pinch-zoom;
+}
+
+.lightbox__image {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: calc(100dvh - 15rem);
+    object-fit: contain;
+}
+
+.lightbox__caption {
+    text-align: center;
+}
+
+.lightbox__counter {
+    display: block;
+    margin-top: 0.25rem;
+    font-variant-numeric: tabular-nums;
+    color: rgb(255 255 255 / 0.8);
+}
+
+.lightbox__button {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    color: var(--color-white);
+    background-color: rgb(255 255 255 / 0.14);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.lightbox__button:hover {
+    color: var(--color-ink);
+    background-color: var(--color-orange);
+}
+
+.lightbox__button--close {
+    top: var(--space-s);
+    right: var(--space-s);
+}
+
+.lightbox__button--prev {
+    top: 50%;
+    left: var(--space-s);
+    transform: translateY(-50%);
+}
+
+.lightbox__button--next {
+    top: 50%;
+    right: var(--space-s);
+    transform: translateY(-50%);
+}
+
+/* Small photos under the large one. The row scrolls sideways when it is too long. */
+.lightbox__thumbnails {
+    display: flex;
+    justify-content: safe center;
+    gap: var(--space-xs);
+    max-width: 100%;
+    margin: 0;
+    padding: 0.25rem;
+    overflow-x: auto;
+    list-style: none;
+    scrollbar-width: thin;
+}
+
+.lightbox__thumbnail-item {
+    flex-shrink: 0;
+}
+
+.lightbox__thumbnail {
+    display: block;
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    opacity: 0.55;
+    cursor: pointer;
+}
+
+.lightbox__thumbnail:hover {
+    opacity: 0.85;
+}
+
+.lightbox__thumbnail[aria-current="true"] {
+    opacity: 1;
+    outline: 2px solid var(--color-orange);
+    outline-offset: 2px;
+}
+
+.lightbox__thumbnail-image {
+    display: block;
+    width: 4rem;
+    height: 3rem;
+    object-fit: cover;
+}
+
+.lightbox :focus-visible {
+    outline-color: var(--color-white);
 }
 
 
@@ -540,69 +743,44 @@ a:hover {
 
 .amenities {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
-    gap: var(--space-m);
-}
-
-.amenities__group {
-    padding: var(--space-m);
-    background-color: var(--color-white);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
+    gap: var(--space-l);
 }
 
 .amenities__title {
-    color: var(--color-terracotta);
+    margin-bottom: var(--space-s);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--color-line);
 }
 
 .amenities__list {
     margin: 0;
-    padding-left: 1.2rem;
+    padding-left: 1.15em;
 }
 
 .amenities__item {
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.4rem;
 }
 
 .amenities__item::marker {
-    color: var(--color-sea);
+    color: var(--color-orange-deep);
 }
 
 .amenities__note {
-    margin-top: var(--space-m);
-    color: var(--color-text-muted);
+    margin-top: var(--space-l);
+    padding-left: var(--space-s);
+    border-left: 3px solid var(--color-orange);
+}
+
+.amenities__note-label {
+    color: var(--color-orange-deep);
 }
 
 
 /* 10. Area and map
    ========================================================================== */
 
-.highlights {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
-    gap: var(--space-m);
-    margin: var(--space-m) 0 var(--space-l) 0;
-}
-
-.highlights__item {
-    padding: var(--space-m);
-    background-color: var(--color-sand);
-    border-radius: var(--radius);
-}
-
-.highlights__term {
-    margin-bottom: var(--space-xs);
-    font-weight: 700;
-    color: var(--color-sea-dark);
-}
-
-.highlights__text {
-    margin: 0;
-}
-
 .area-photos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
     gap: var(--space-s);
     margin: var(--space-l) 0;
     padding: 0;
@@ -617,14 +795,31 @@ a:hover {
     width: 100%;
     aspect-ratio: 3 / 2;
     object-fit: cover;
-    background-color: var(--color-seafoam);
-    border-radius: var(--radius);
+    background-color: var(--color-white);
 }
 
 .area-photos__caption {
     margin-top: var(--space-xs);
-    font-size: var(--font-size-small);
-    color: var(--color-text-muted);
+    color: var(--color-ink-soft);
+}
+
+.highlights {
+    display: grid;
+    gap: var(--space-m) var(--space-l);
+    margin: var(--space-m) 0 var(--space-l) 0;
+}
+
+.highlights__item {
+    padding-top: var(--space-s);
+    border-top: 1px solid var(--color-line);
+}
+
+.highlights__title {
+    margin-bottom: 0.25rem;
+}
+
+.highlights__text {
+    margin: 0;
 }
 
 .map {
@@ -633,134 +828,98 @@ a:hover {
 
 .map__frame {
     width: 100%;
-    height: clamp(18rem, 40vw, 28rem);
-    background-color: var(--color-seafoam);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
+    height: clamp(9rem, 20vw, 13rem);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-line);
 }
 
 .map__caption {
     margin-top: var(--space-xs);
-    font-size: var(--font-size-small);
 }
 
 
 /* 11. Prices
    ========================================================================== */
 
-/* Lets the table scroll sideways on very narrow screens instead of breaking the layout. */
+/* On very narrow screens the table scrolls sideways inside this wrapper. */
 .prices__table-wrapper {
-    max-width: 40rem;
+    max-width: 42rem;
     overflow-x: auto;
 }
 
 .prices__table {
     width: 100%;
     border-collapse: collapse;
-    background-color: var(--color-white);
-    border-radius: var(--radius);
 }
 
-.prices__caption {
-    padding-bottom: var(--space-xs);
-    font-weight: 700;
-    text-align: left;
-    color: var(--color-sea-dark);
-}
 
 .prices__table th,
 .prices__table td {
-    padding: 0.75rem var(--space-s);
+    padding: 0.85rem var(--space-s) 0.85rem 0;
     text-align: left;
-    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-line);
 }
 
 .prices__table thead th {
-    font-size: var(--font-size-small);
-    color: var(--color-text-muted);
+    font-weight: 500;
+    color: var(--color-ink-soft);
+    border-bottom: 2px solid var(--color-ink);
 }
 
-.prices__price {
-    font-weight: 700;
+.prices__table .prices__price {
+    padding-right: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
     white-space: nowrap;
-    color: var(--color-sea-dark);
 }
 
-.prices__note {
-    margin-top: var(--space-m);
-    color: var(--color-text-muted);
-}
 
 
 /* 12. Contact
    ========================================================================== */
 
 .contact {
-    padding: var(--space-l) var(--space-m);
-    color: var(--color-white);
-    background-color: var(--color-sea-dark);
-    border-radius: var(--radius);
-}
-
-.contact__title {
-    color: var(--color-white);
-}
-
-.contact__title::after {
-    background-color: var(--color-sun);
-}
-
-.contact__text {
-    color: var(--color-white);
-}
-
-.contact__address {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-s);
-    margin-top: var(--space-m);
     font-style: normal;
 }
 
 .contact__name {
-    margin: 0;
-    font-size: 1.2em;
-    font-weight: 700;
+    margin-bottom: var(--space-m);
+    font-weight: 600;
 }
 
-.contact__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-s);
+.contact__list {
+    display: grid;
+    gap: var(--space-m);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.contact__label {
+    display: block;
+    font-weight: 500;
 }
 
 .contact__link {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.75rem;
-    padding: 0.6rem 1.25rem;
-    font-weight: 700;
-    color: var(--color-sea-dark);
-    background-color: var(--color-sun);
-    border-radius: 999px;
-    text-decoration: none;
+    display: inline-block;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    line-height: 1.2;
+    text-decoration-color: var(--color-ink);
+    text-decoration-thickness: 0.06em;
     overflow-wrap: anywhere;
 }
 
 .contact__link:hover {
-    color: var(--color-sea-dark);
-    background-color: var(--color-white);
-}
-
-.contact :focus-visible {
-    outline-color: var(--color-sun);
+    text-decoration-thickness: 0.12em;
 }
 
 
-/* 13. Very small and larger screens
+/* 13. Breakpoints
    ========================================================================== */
 
-/* Very narrow phones (320 px wide): tighter header and table so nothing overflows. */
+/* Very narrow phones (320px): a tighter header so nothing overflows. */
 @media (max-width: 24em) {
     .site-header__inner {
         gap: var(--space-xs);
@@ -768,41 +927,84 @@ a:hover {
         padding-right: 0.75rem;
     }
 
-    .site-header__logo {
-        font-size: 1.15rem;
-    }
-
-    .site-nav__toggle,
-    .lang-switch {
-        padding-left: 0.6rem;
-        padding-right: 0.6rem;
+    .site-header__logo-image {
+        height: 2.5rem;
     }
 
     .prices__table th,
     .prices__table td {
-        padding-left: 0.4rem;
-        padding-right: 0.4rem;
+        padding-right: 0.6rem;
     }
 }
 
-@media (min-width: 40em) {
-    .gallery__item--featured {
+/* Medium screens: the gallery becomes a mosaic with one large and 2 small photos. */
+@media (min-width: 36em) {
+    .gallery__list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-xs);
+        overflow-x: visible;
+        scroll-snap-type: none;
+    }
+
+    .gallery__item--main {
         grid-column: span 2;
+        grid-row: span 2;
     }
 
-    .gallery__item--featured .gallery__image {
-        aspect-ratio: 8 / 3;
+    /* The large photo takes the full height of the small ones beside it. */
+    .gallery__item--main .gallery__link {
+        position: absolute;
+        inset: 0;
     }
 
-    .contact {
-        padding: var(--space-xl) var(--space-l);
+    .gallery__item--main .gallery__image {
+        height: 100%;
+        aspect-ratio: auto;
+    }
+
+    .amenities {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .area-photos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .highlights {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* From here the full menu fits, so the burger and the popover styling turn off. */
+/* The extra photos are only hidden when JavaScript can open them in the viewer. */
+@media (min-width: 36em) and (scripting: enabled) {
+    .gallery__item:nth-child(n + 4) {
+        display: none;
+    }
+}
+
+/* Large screens: the full menu fits in the header, section headings move
+   to a column of their own and the mosaic shows 4 small photos. */
 @media (min-width: 62em) {
-    .site-nav__toggle,
-    .site-nav__close {
+    .site-header__inner {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+    }
+
+    .site-header__logo {
+        justify-self: start;
+    }
+
+    .site-nav {
+        justify-self: center;
+        margin-left: 0;
+    }
+
+    .lang-switch {
+        justify-self: end;
+    }
+
+    .site-nav__toggle {
         display: none;
     }
 
@@ -815,7 +1017,6 @@ a:hover {
         overflow: visible;
         background-color: transparent;
         border: 0;
-        box-shadow: none;
     }
 
     .site-nav__list {
@@ -824,61 +1025,102 @@ a:hover {
     }
 
     .site-nav__link {
-        padding: 0.5rem 0.75rem;
+        padding: 0.5rem 0.8rem;
+        font-weight: 500;
+        text-decoration-line: underline;
+        text-decoration-color: transparent;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 0.45em;
+    }
+
+    .site-nav__link:hover {
+        background-color: transparent;
+        text-decoration-color: var(--color-orange);
+    }
+
+    .section__inner--split {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr);
+        column-gap: var(--space-l);
+        align-items: start;
+    }
+
+    .section__inner--split .section__title {
+        margin-bottom: 0;
+    }
+
+    .gallery__list {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 62em) and (scripting: enabled) {
+    .gallery__item:nth-child(4),
+    .gallery__item:nth-child(5) {
+        display: block;
     }
 }
 
 
-/* 14. Reduced motion, short screens and print
+/* 14. Motion, short screens and print
    ========================================================================== */
 
 @media (prefers-reduced-motion: no-preference) {
     html {
         scroll-behavior: smooth;
     }
+
+    .site-nav__burger {
+        transition: background-color 0.2s ease;
+    }
+
+    .site-nav__burger::before,
+    .site-nav__burger::after {
+        transition: transform 0.2s ease;
+    }
+
+    .site-nav__link {
+        transition: text-decoration-color 0.15s ease;
+    }
 }
 
-/* On very short screens (for example a phone on its side or 400 % zoom)
-   the header stops being sticky so it does not cover the content. */
+/* Very short screens (a phone on its side, or 400% zoom): the header scrolls
+   away with the page so it never covers the content. */
 @media (max-height: 30em) {
     .site-header {
         position: static;
     }
 
     html {
-        scroll-padding-top: var(--space-s);
+        scroll-padding-top: 0;
     }
 }
 
 @media print {
+    .section + .section::before,
+    .section + .section::after,
     .site-header,
     .skip-link,
-    .intro__actions,
-    .map {
+    .map,
+    .gallery__show-all {
         display: none;
     }
 
-    body,
     .section,
-    .section--white,
-    .section--seafoam,
-    .contact {
-        color: #000000;
+    .section--tint,
+    .section--accent {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         background-color: #ffffff;
     }
 
-    .section {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
-
-    .contact__link {
-        color: #000000;
-        background-color: transparent;
-        padding: 0;
-    }
-
-    .gallery {
+    .gallery__list {
+        display: grid;
         grid-template-columns: repeat(3, 1fr);
+        overflow-x: visible;
+    }
+
+    .gallery__item:nth-child(n) {
+        display: block;
     }
 }
