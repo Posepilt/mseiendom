@@ -231,16 +231,16 @@ a:hover {
 }
 
 .site-header__logo {
-    display: block;
+    display: flex;
+    align-items: center;
     flex-shrink: 0;
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
+    min-height: 2.75rem;
 }
 
 .site-header__logo-image {
     display: block;
-    width: auto;
-    height: 3rem;
+    width: 7rem;
+    height: auto;
 }
 
 .site-nav {
@@ -926,7 +926,7 @@ html:has(.lightbox[open]) {
     }
 
     .site-header__logo-image {
-        height: 2.5rem;
+        width: 6rem;
     }
 
     .prices__table th,
