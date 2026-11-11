@@ -237,9 +237,10 @@ a:hover {
     min-height: 2.75rem;
 }
 
+/* Same width as the old logo: 3rem tall at its 522 x 256.5 shape. */
 .site-header__logo-image {
     display: block;
-    width: 7rem;
+    width: 6.1rem;
     height: auto;
 }
 
@@ -926,7 +927,7 @@ html:has(.lightbox[open]) {
     }
 
     .site-header__logo-image {
-        width: 6rem;
+        width: 5.1rem;
     }
 
     .prices__table th,
