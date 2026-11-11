@@ -767,8 +767,6 @@ html:has(.lightbox[open]) {
 
 .amenities__note {
     margin-top: var(--space-l);
-    padding-left: var(--space-s);
-    border-left: 3px solid var(--color-orange);
 }
 
 .amenities__note-label {
