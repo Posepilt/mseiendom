@@ -206,6 +206,16 @@ a:hover {
 }
 
 
+/* Short "NB!" note under a list or table, used in any section. */
+.note {
+    margin-top: var(--space-l);
+}
+
+.note__label {
+    color: var(--color-orange-deep);
+}
+
+
 /* 5. Site header and navigation
    ========================================================================== */
 
@@ -763,14 +773,6 @@ html:has(.lightbox[open]) {
 }
 
 .amenities__item::marker {
-    color: var(--color-orange-deep);
-}
-
-.amenities__note {
-    margin-top: var(--space-l);
-}
-
-.amenities__note-label {
     color: var(--color-orange-deep);
 }
 
